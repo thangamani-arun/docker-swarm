@@ -16,4 +16,3 @@ services:
         - "traefik.http.routers.nginx.service=nginx"
 networks:
   traefik_network:
-    external: true
