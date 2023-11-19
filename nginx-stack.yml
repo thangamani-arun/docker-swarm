@@ -1,0 +1,19 @@
+version: '3'
+services:
+  nginx:
+    image: nginx
+    networks:
+      - traefik_network
+    volumes:
+      - /mnt/nginx/html:/usr/share/nginx/html
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nginx.rule=Host(`nginx.osdp.custella.com`)"
+        - "traefik.http.services.nginx.loadbalancer.server.port=80"
+        - "traefik.http.routers.nginx.tls=true"
+        - "traefik.http.routers.nginx.tls.certresolver=myresolver"
+        - "traefik.http.routers.nginx.service=nginx"
+networks:
+  traefik_network:
+    external: true
