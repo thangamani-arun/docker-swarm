@@ -14,13 +14,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Login to Docker Registry
-      run: docker login ${{ vars.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
+      run: docker login ${{ vars.REGISTRY_URL }} -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: Build Docker Image
-      run: docker build -t ${{ vars.REGISTRY_URL }}/${{ secrets.REGISTRY_USERNAME }}/ubuntu20-nginx:latest .
+      run: docker build -t ${{ vars.REGISTRY_URL }}/${{ vars.REGISTRY_USERNAME }}/ubuntu20-nginx:latest .
 
     - name: Push Docker Image
-      run: docker push ${{ vars.REGISTRY_URL }}/${{ secrets.REGISTRY_USERNAME }}/ubuntu20-nginx:latest
+      run: docker push ${{ vars.REGISTRY_URL }}/${{ vars.REGISTRY_USERNAME }}/ubuntu20-nginx:latest
 
     - name: Clean Up
       run: docker system prune -af
