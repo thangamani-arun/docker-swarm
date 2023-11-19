@@ -1,26 +1,20 @@
-name: Deploy Web Stack
-
+name: Deploy to Portainer
 on:
   push:
     branches:
       - main
-
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Login to Docker Registry
-      run: docker login ${{ vars.REGISTRY_URL }} -u ${{ vars.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
-
-    - name: Build Docker Image
-      run: docker build -t registry.osdp.custella.com/testuser/ubuntu20-nginx:latest .
-
-    - name: Push Docker Image
-      run: docker push registry.osdp.custella.com/testuser/ubuntu20-nginx:latest
-
-    - name: Clean Up
-      run: docker system prune -af
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy to Portainer
+        uses: datntdev0/action-deploy-to-portainer@v0.1.0
+        with:
+          portainerHost: ${{ secrets.PORTAINER_HOST }}
+          portainerApiKey: ${{ secrets.PORTAINER_API_KEY }}
+          portainerEnvId: ${{ secrets.PORTAINER_ENV_ID }}
+          portainerStackName: 'nginx'
+          portainerFilePath: './nginx-stack.yml'
+          portainerEnvVars: '[{"name": "app", "value": "web"}]'
